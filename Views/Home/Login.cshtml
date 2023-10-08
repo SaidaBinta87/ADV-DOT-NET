@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+<html>
+<body>
+
+    @if (Model != null)
+    {
+        @Model.name
+        @Model.id
+        @Model.gender
+        @Model.profession
+
+
+        if (Model.hobbies != null)
+        {
+            <ul>
+                @foreach (var inf in Model.hobbies)
+                {
+                    <li>@inf</li>
+                }
+            </ul>
+        }
+    }
+
+    <h2>Login</h2>
+
+
+</body>
+</html>
+@Html.ValidationSummary()
+
+@{
+    bool CheckGender(string gender)
+    {
+        if (Model != null && Model.gender != null &&
+            Model.gender.Equals(gender))
+        {
+            return true;
+        }
+        return false;
+    }
+    bool CheckHobbies(string hobby)
+    {
+        if (Model != null && Model.hobbies != null)
+        {
+            foreach (var h in Model.hobbies)
+            {
+                if (h.Equals(hobby)) return true;
+            }
+        }
+        return false;
+    }
+
+    bool CheckProfession(string value)
+    {
+        if (Model != null && Model.profession !=null &&
+            Model.profession.Equals(value))
+        {
+            return true;
+        }
+        return false;
+    }
+
+}
+
+
+<form action="" method="post">
+
+
+    Name: <input type="text" value="@(Model==null ? "":Model.name)" name="name" /><br />
+    <span class="text-danger">@Html.ValidationMessage("name")</span>
+    <br />
+    Id: <input type="text" value="@(Model==null ? "":Model.id)" name="id" /><br />
+    <span class="text-danger">@Html.ValidationMessage("id")</span>
+    <br />
+    Password: <input type="password" value="@(Model==null ? "":Model.password)" name="password" /><br />
+    <span class="text-danger">@Html.ValidationMessage("password")</span>
+    <br />
+    AIUBID: <input type="text" value="@(Model==null ? "":Model.Aid)" name="Aid" /><br />
+    <span class="text-danger">@Html.ValidationMessage("Aid")</span>
+    <br />
+    Email:<input type="email" value="@(Model==null ? "":Model.email)" name="email" /> <br />
+    <span class="text-danger">@Html.ValidationMessage("email")</span>
+    <br />
+
+    DOB: <input type="date" value='@(Model == null ? "" : Model.dob.ToString("yyyy-MM-dd"))' name="dob" /><br />
+    <span class="text-danger">@Html.ValidationMessage("dob")</span>
+    <br />
+    Gender: <input type="radio" checked="@CheckGender("Male")" name="gender" value="Male" /> Male
+    <input type="radio" checked="@CheckGender("Female")" name="gender" value="Female" /> Female<br />
+    <span class="text-danger">@Html.ValidationMessage("gender")</span>
+    <br />
+    Profession:
+    <select name="profession">
+        <option selected disabled>---Select---</option>
+        <option value="Teacher" selected="@CheckProfession("Teacher")">Teacher</option>
+        <option value="Student" selected="@CheckProfession("Student")">Student</option>
+        <option value="Business" selected="@CheckProfession("Business")">Business</option>
+    </select>
+    <br />
+    <span class="text-danger">@Html.ValidationMessage("profession")</span>
+    <br />
+    Hobbies: <input type="checkbox" name="hobbies" value="Reading" /> Reading
+    <input type="checkbox" checked="@CheckHobbies("Sports")" name="hobbies[]" value="Sports" /> Sports
+    <input type="checkbox" checked="@CheckHobbies("Traveling")" name="hobbies[]" value="Traveling" /> Traveling<br />
+    <input type="checkbox" checked="@CheckHobbies("Cycling")" name="hobbies[]" value="Cycling" /> Cycling<br />
+    <span class="text-danger">@Html.ValidationMessage("hobbies")</span>
+    <br />
+    <input type="submit" value="Submit" />
+
+</form>
+
